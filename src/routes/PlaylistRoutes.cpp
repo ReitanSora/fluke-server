@@ -10,6 +10,8 @@
 #include "../tasks/CPlayItemTask.h"
 #include "../tasks/CGetPlaylistTrackUriTask.h"
 #include "../tasks/CDeletePlaylistItemTask.h"
+#include "../tasks/CCreatePlaylistTask.h"
+#include "../tasks/CAddSongsTask.h"
 #include "../helpers/AlbumArtHelper.h"
 
 using json = nlohmann::json;
@@ -338,6 +340,65 @@ static void HandleGetPlaylistCover(MyPlugin* plugin, const httplib::Request& req
 
 }
 
+static void HandleCreatePlaylist(MyPlugin* plugin, const httplib::Request& req, httplib::Response& res)
+{
+    try
+    {
+        json body = json::parse(req.body);
+        std::string playlistName = body.at("playlistName").get<std::string>();
+
+        CCreatePlaylistTask* task = new CCreatePlaylistTask(plugin, playlistName);
+        HRESULT hr = plugin->GetThreadService()->ExecuteInMainThread(task, AIMP_SERVICE_THREADS_FLAGS_WAITFOR);
+
+        if (SUCCEEDED(hr))
+        {
+            res.status = 201;
+        }
+        else
+        {
+            res.status = 500;
+            res.set_content(json{ {"error", "Failed to create playlist"} }.dump(), "application/json");
+        }
+        task->Release();
+    }
+    catch (const json::exception&)
+    {
+        res.status = 422;
+        res.set_content(json{ {"error", "Invalid playlist name"} }.dump(), "application/json");
+    }
+}
+
+static void HandleAddSongsToPlaylist(MyPlugin* plugin, const httplib::Request& req, httplib::Response& res)
+{
+    try
+    {
+        json body = json::parse(req.body);
+        std::string targetPlaylistId = body.at("targetPlaylistId").get<std::string>();
+        std::string sourcePlaylistId = body.at("sourcePlaylistId").get<std::string>();
+        std::vector<int> songsIndexes = body.at("songsIndexes").get<std::vector<int>>();
+
+		CAddSongsTask* task = new CAddSongsTask(plugin, targetPlaylistId, sourcePlaylistId, songsIndexes);
+		HRESULT hr = plugin->GetThreadService()->ExecuteInMainThread(task, AIMP_SERVICE_THREADS_FLAGS_WAITFOR);
+
+        if(SUCCEEDED(hr) && task->HasFoundPlaylists())
+        {
+            res.status = 204;
+        }
+        else
+        {
+            res.status = 500;
+            res.set_content(json{ {"error", "Failed to add songs to playlist"} }.dump(), "application/json");
+        }
+        task->Release();
+
+    }
+    catch (const json::exception&)
+    {
+        res.status = 422;
+        res.set_content(json{ {"error", "Invalid JSON body"} }.dump(), "application/json");
+    }
+}
+
 static void HandleDeletePlaylistItem(MyPlugin *plugin, const httplib::Request &req, httplib::Response &res)
 {
     if (!plugin->GetPlaylistService() || !plugin->GetThreadService())
@@ -394,28 +455,35 @@ void RegisterPlaylistRoutes(MyPlugin* plugin, const std::string& prefix)
     auto &svr = plugin->GetHttpServer();
 
     // GET endpoints
-    svr.Get(prefix + "/playlist/list", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/playlists", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistList(plugin, req, res); });
 
-    svr.Get(prefix + "/playlist/current", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/playlists/current", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetCurrentPlaylist(plugin, req, res); });
 
-    svr.Get(prefix + "/playlist/info", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/playlists/info", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistInfo(plugin, req, res); });
 
-    svr.Get(prefix + "/playlist/stats", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/playlists/stats", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistStats(plugin, req, res); });
 
-    svr.Get(prefix + "/playlist/items", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/playlists/items", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistItems(plugin, req, res); });
 
-    svr.Get(prefix + "/playlist/play", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/playlists/play", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandlePlayPlaylistItem(plugin, req, res); });
 
-    svr.Get(prefix + "/playlist/cover", [plugin](const httplib::Request& req, httplib::Response& res)
+    svr.Get(prefix + "/playlists/cover", [plugin](const httplib::Request& req, httplib::Response& res)
             { HandleGetPlaylistCover(plugin, req, res); });
 
+    // POST endpoints
+    svr.Post(prefix + "/playlists", [plugin](const httplib::Request &req, httplib::Response& res)
+        {HandleCreatePlaylist(plugin, req, res);});
+
+    svr.Post(prefix + "/playlists/add", [plugin](const httplib::Request& req, httplib::Response& res)
+        { HandleAddSongsToPlaylist(plugin, req, res); });
+
 	// DELETE endpoint
-    svr.Delete(prefix + "/playlist/items", [plugin](const httplib::Request& req, httplib::Response& res)
+    svr.Delete(prefix + "/playlists/items", [plugin](const httplib::Request& req, httplib::Response& res)
             { HandleDeletePlaylistItem(plugin, req, res); });
 }
