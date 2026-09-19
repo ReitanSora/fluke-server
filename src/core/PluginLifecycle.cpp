@@ -165,7 +165,7 @@ HRESULT WINAPI MyPlugin::Initialize(IAIMPCore* Core)
 
     _httpServer = std::make_unique<httplib::Server>();
 
-	const std::string prefix = "/api/v1";
+	const std::string prefix = "/api/v2";
 
     RegisterPlayerRoutes(this, prefix);
     RegisterPlaylistRoutes(this, prefix);
