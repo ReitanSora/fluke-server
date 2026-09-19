@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <fstream>
 #include "TrackRoutes.h"
 #include "../core/Plugin.h"
 #include <nlohmann/json.hpp>
@@ -6,6 +7,7 @@
 #include "../helpers/TrackInfoHelper.h"
 #include "../tasks/CGetTrackInfoTask.h"
 #include "../tasks/CGetTrackLyricsTask.h"
+#include "../tasks/CDownloadTrackTask.h"
 
 using json = nlohmann::json;
 
@@ -192,6 +194,75 @@ static void HandleGetTrackLyrics(MyPlugin *plugin, const httplib::Request &req, 
 
 }
 
+static void HandleDownloadTrack(MyPlugin* plugin, const httplib::Request& req, httplib::Response& res)
+{
+
+    if (!req.has_param("playlistId") || !req.has_param("songIndex"))
+    {
+        res.status = 422;
+        res.set_content(json{ {"error", "Missing playlist id or song index"} }.dump(), "application/json");
+        return;
+    }
+
+    std::string playlistId = req.get_param_value("playlistId");
+    int songIndex = std::stoi(req.get_param_value("songIndex"));
+
+    CDownloadTrackTask* task = new CDownloadTrackTask(plugin, playlistId, songIndex);
+
+    HRESULT hr = plugin->GetThreadService()->ExecuteInMainThread(task, AIMP_SERVICE_THREADS_FLAGS_WAITFOR);
+
+    if (FAILED(hr) || task->HasErrors())
+    {
+        res.status = 500;
+        res.set_content(json{ {"error", "Failed to download track"} }.dump(), "application/json");
+        task->Release();
+        return;
+    }
+
+    std::string filePath = task->GetResponse();
+    task->Release();
+
+    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+    if (!file.is_open())
+    {
+        res.status = 404;
+        res.set_content(json{ {"error", "File not found"} }.dump(), "application/json");
+        return;
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    std::string fileName = filePath;
+    size_t pos = filePath.find_last_of("/\\");
+    if (pos != std::string::npos)
+    {
+        fileName = filePath.substr(pos + 1);
+    }
+
+    res.set_header("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+    res.set_content_provider(
+        size,
+        "application/octet-stream",
+        [filePath](size_t offset, size_t length, httplib::DataSink& sink) {
+            std::ifstream is(filePath, std::ios::binary);
+            if (!is.is_open()) return false;
+
+            is.seekg(offset, std::ios::beg);
+
+            std::vector<char> buffer(length);
+            is.read(buffer.data(), length);
+
+            std::streamsize bytesRead = is.gcount();
+            if (bytesRead > 0) {
+                sink.write(buffer.data(), static_cast<size_t>(bytesRead));
+            }
+            return true;
+        }
+    );
+}
+
 // =============================================================================
 // Route Registration
 // =============================================================================
@@ -209,4 +280,7 @@ void RegisterTrackRoutes(MyPlugin* plugin, const std::string& prefix)
 
     svr.Get(prefix + "/track/lyrics", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetTrackLyrics(plugin, req, res); });
+
+    svr.Get(prefix + "/track/download", [plugin](const httplib::Request& req, httplib::Response& res)
+            { HandleDownloadTrack(plugin, req, res); });
 }
