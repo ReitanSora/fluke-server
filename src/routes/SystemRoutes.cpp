@@ -17,9 +17,8 @@ void RegisterSystemRoutes(MyPlugin* plugin, const std::string& prefix)
 		json response = {
 			{"plugin", {
 				{"name", "Fluke: AIMP Remote Control"},
-				{"version", "1.5.1"},
-				{"description", "Remote control plugin for AIMP"},
-				{"author", "Stiven Pilca"}
+				{"version", "2.0.0"},
+				{"description", "Remote control plugin for AIMP"}
 			}}
 		};
 
