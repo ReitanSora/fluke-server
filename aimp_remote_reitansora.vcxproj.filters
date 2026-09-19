@@ -141,6 +141,15 @@
     <ClInclude Include="src\routes\SystemRoutes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tasks\CAddSongsTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tasks\CCreatePlaylistTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tasks\CDownloadTrackTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -219,6 +228,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\routes\SystemRoutes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tasks\CAddSongsTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tasks\CCreatePlaylistTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tasks\CDownloadTrackTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -212,7 +212,10 @@
     <ClInclude Include="src\routes\PlaylistRoutes.h" />
     <ClInclude Include="src\routes\SystemRoutes.h" />
     <ClInclude Include="src\routes\TrackRoutes.h" />
+    <ClInclude Include="src\tasks\CAddSongsTask.h" />
+    <ClInclude Include="src\tasks\CCreatePlaylistTask.h" />
     <ClInclude Include="src\tasks\CDeletePlaylistItemTask.h" />
+    <ClInclude Include="src\tasks\CDownloadTrackTask.h" />
     <ClInclude Include="src\tasks\CGetCurrentPlaylistTask.h" />
     <ClInclude Include="src\tasks\CGetPlaylistTrackUriTask.h" />
     <ClInclude Include="src\tasks\CGetPlaylistInfoTask.h" />
@@ -245,7 +248,10 @@
     <ClCompile Include="src\routes\PlaylistRoutes.cpp" />
     <ClCompile Include="src\routes\SystemRoutes.cpp" />
     <ClCompile Include="src\routes\TrackRoutes.cpp" />
+    <ClCompile Include="src\tasks\CAddSongsTask.cpp" />
+    <ClCompile Include="src\tasks\CCreatePlaylistTask.cpp" />
     <ClCompile Include="src\tasks\CDeletePlaylistItemTask.cpp" />
+    <ClCompile Include="src\tasks\CDownloadTrackTask.cpp" />
     <ClCompile Include="src\tasks\CGetCurrentPlaylistTask.cpp" />
     <ClCompile Include="src\tasks\CGetPlaylistTrackUriTask.cpp" />
     <ClCompile Include="src\tasks\CGetPlaylistInfoTask.cpp" />
