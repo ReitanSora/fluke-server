@@ -6,7 +6,7 @@ class MyPlugin;
  * @param plugin Pointer to MyPlugin instance
  *
  * Endpoints registered:
- * - GET  /health				- Get health status of the plugin
+ * - GET  /system/health		- Get health status of the plugin
  * - GET  /system/info			- Get plugin information
  */
 void RegisterSystemRoutes(MyPlugin* plugin, const std::string& prefix);
