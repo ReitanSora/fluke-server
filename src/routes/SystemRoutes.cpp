@@ -13,7 +13,7 @@ void RegisterSystemRoutes(MyPlugin* plugin, const std::string& prefix)
 		res.status = 204;
 		});
 
-	svr.Get(prefix + "/system/info", [plugin](const httplib::Request& req, httplib::Response& res) {
+	svr.Get(prefix + "/info", [plugin](const httplib::Request& req, httplib::Response& res) {
 		json response = {
 			{"plugin", {
 				{"name", "Fluke: AIMP Remote Control"},

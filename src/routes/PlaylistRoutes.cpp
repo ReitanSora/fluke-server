@@ -455,35 +455,35 @@ void RegisterPlaylistRoutes(MyPlugin* plugin, const std::string& prefix)
     auto &svr = plugin->GetHttpServer();
 
     // GET endpoints
-    svr.Get(prefix + "/playlists", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix, [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistList(plugin, req, res); });
 
-    svr.Get(prefix + "/playlists/current", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/current", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetCurrentPlaylist(plugin, req, res); });
 
-    svr.Get(prefix + "/playlists/info", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/info", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistInfo(plugin, req, res); });
 
-    svr.Get(prefix + "/playlists/stats", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/stats", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistStats(plugin, req, res); });
 
-    svr.Get(prefix + "/playlists/items", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/items", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetPlaylistItems(plugin, req, res); });
 
-    svr.Get(prefix + "/playlists/play", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/play", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandlePlayPlaylistItem(plugin, req, res); });
 
-    svr.Get(prefix + "/playlists/cover", [plugin](const httplib::Request& req, httplib::Response& res)
+    svr.Get(prefix + "/cover", [plugin](const httplib::Request& req, httplib::Response& res)
             { HandleGetPlaylistCover(plugin, req, res); });
 
     // POST endpoints
-    svr.Post(prefix + "/playlists", [plugin](const httplib::Request &req, httplib::Response& res)
+    svr.Post(prefix, [plugin](const httplib::Request &req, httplib::Response& res)
         {HandleCreatePlaylist(plugin, req, res);});
 
-    svr.Post(prefix + "/playlists/add", [plugin](const httplib::Request& req, httplib::Response& res)
+    svr.Post(prefix + "/songs", [plugin](const httplib::Request& req, httplib::Response& res)
         { HandleAddSongsToPlaylist(plugin, req, res); });
 
 	// DELETE endpoint
-    svr.Delete(prefix + "/playlists/items", [plugin](const httplib::Request& req, httplib::Response& res)
+    svr.Delete(prefix + "/songs", [plugin](const httplib::Request& req, httplib::Response& res)
             { HandleDeletePlaylistItem(plugin, req, res); });
 }

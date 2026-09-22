@@ -272,15 +272,15 @@ void RegisterTrackRoutes(MyPlugin* plugin, const std::string& prefix)
     auto &svr = plugin->GetHttpServer();
 
     // GET endpoints
-    svr.Get(prefix + "/track/info", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/info", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetTrackInfo(plugin, req, res); });
 
-    svr.Get(prefix + "/track/cover", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/cover", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetTrackCover(plugin, req, res); });
 
-    svr.Get(prefix + "/track/lyrics", [plugin](const httplib::Request &req, httplib::Response &res)
+    svr.Get(prefix + "/lyrics", [plugin](const httplib::Request &req, httplib::Response &res)
             { HandleGetTrackLyrics(plugin, req, res); });
 
-    svr.Get(prefix + "/track/download", [plugin](const httplib::Request& req, httplib::Response& res)
+    svr.Get(prefix + "/download", [plugin](const httplib::Request& req, httplib::Response& res)
             { HandleDownloadTrack(plugin, req, res); });
 }

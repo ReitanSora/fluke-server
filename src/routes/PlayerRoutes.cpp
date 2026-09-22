@@ -215,19 +215,19 @@ void RegisterPlayerRoutes(MyPlugin *plugin, const std::string& prefix)
     auto& svr = plugin->GetHttpServer();
     
     // GET endpoints
-    svr.Get(prefix + "/player/state", HandleGetPlayerState);
-    svr.Get(prefix + "/player/volume", HandleGetVolume);
+    svr.Get(prefix + "/state", HandleGetPlayerState);
+    svr.Get(prefix + "/volume", HandleGetVolume);
     
     // POST endpoints - playback control
-    svr.Post(prefix + "/player/playpause", HandlePlayPause);
-    svr.Post(prefix + "/player/stop", HandleStop);
-    svr.Post(prefix + "/player/next", HandleNext);
-    svr.Post(prefix + "/player/previous", HandlePrevious);
+    svr.Post(prefix + "/playpause", HandlePlayPause);
+    svr.Post(prefix + "/stop", HandleStop);
+    svr.Post(prefix + "/next", HandleNext);
+    svr.Post(prefix + "/previous", HandlePrevious);
     
     // POST endpoints - settings
-    svr.Post(prefix + "/player/volume", HandleSetVolume);
-    svr.Post(prefix + "/player/seek", HandleSeek);
-    svr.Post(prefix + "/player/mute", HandleToggleMute);
-    svr.Post(prefix + "/player/shuffle", HandleToggleShuffle);
-    svr.Post(prefix + "/player/repeat", HandleToggleRepeat);
+    svr.Post(prefix + "/volume", HandleSetVolume);
+    svr.Post(prefix + "/seek", HandleSeek);
+    svr.Post(prefix + "/mute", HandleToggleMute);
+    svr.Post(prefix + "/shuffle", HandleToggleShuffle);
+    svr.Post(prefix + "/repeat", HandleToggleRepeat);
 }

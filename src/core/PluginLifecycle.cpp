@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "../routes/PlayerRoutes.h"
 #include "../routes/PlaylistRoutes.h"
+#include "../routes/QueueRoutes.h"
 #include "../routes/TrackRoutes.h"
 #include "../routes/SystemRoutes.h"
 #include <nlohmann/json.hpp>
@@ -167,10 +168,11 @@ HRESULT WINAPI MyPlugin::Initialize(IAIMPCore* Core)
 
 	const std::string prefix = "/api/v2";
 
-    RegisterPlayerRoutes(this, prefix);
-    RegisterPlaylistRoutes(this, prefix);
-    RegisterTrackRoutes(this, prefix);
-    RegisterSystemRoutes(this, prefix);
+    RegisterPlayerRoutes(this, prefix + "/player");
+    RegisterPlaylistRoutes(this, prefix + "/playlists");
+    RegisterQueueRoutes(this, prefix + "/queue");
+    RegisterTrackRoutes(this, prefix + "/tracks");
+    RegisterSystemRoutes(this, prefix + "/system");
 
     _httpThread = std::make_unique<std::thread>([this]()
     {
