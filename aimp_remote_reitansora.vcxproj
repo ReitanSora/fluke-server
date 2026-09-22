@@ -210,11 +210,14 @@
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\routes\PlayerRoutes.h" />
     <ClInclude Include="src\routes\PlaylistRoutes.h" />
+    <ClInclude Include="src\routes\QueueRoutes.h" />
     <ClInclude Include="src\routes\SystemRoutes.h" />
     <ClInclude Include="src\routes\TrackRoutes.h" />
+    <ClInclude Include="src\tasks\CAddSongsQueueTask.h" />
     <ClInclude Include="src\tasks\CAddSongsTask.h" />
     <ClInclude Include="src\tasks\CCreatePlaylistTask.h" />
     <ClInclude Include="src\tasks\CDeletePlaylistItemTask.h" />
+    <ClInclude Include="src\tasks\CDeleteSongsQueueTask.h" />
     <ClInclude Include="src\tasks\CDownloadTrackTask.h" />
     <ClInclude Include="src\tasks\CGetCurrentPlaylistTask.h" />
     <ClInclude Include="src\tasks\CGetPlaylistTrackUriTask.h" />
@@ -222,8 +225,10 @@
     <ClInclude Include="src\tasks\CGetPlaylistItemsTask.h" />
     <ClInclude Include="src\tasks\CGetPlaylistsTask.h" />
     <ClInclude Include="src\tasks\CGetPlaylistStatsTask.h" />
+    <ClInclude Include="src\tasks\CGetQueueTask.h" />
     <ClInclude Include="src\tasks\CGetTrackInfoTask.h" />
     <ClInclude Include="src\tasks\CGetTrackLyricsTask.h" />
+    <ClInclude Include="src\tasks\CMoveSongQueueTask.h" />
     <ClInclude Include="src\tasks\CPlayItemTask.h" />
     <ClInclude Include="src\third_party\qrcodegen\qrcodegen.hpp" />
   </ItemGroup>
@@ -246,11 +251,14 @@
     </ClCompile>
     <ClCompile Include="src\routes\PlayerRoutes.cpp" />
     <ClCompile Include="src\routes\PlaylistRoutes.cpp" />
+    <ClCompile Include="src\routes\QueueRoutes.cpp" />
     <ClCompile Include="src\routes\SystemRoutes.cpp" />
     <ClCompile Include="src\routes\TrackRoutes.cpp" />
+    <ClCompile Include="src\tasks\CAddSongsQueueTask.cpp" />
     <ClCompile Include="src\tasks\CAddSongsTask.cpp" />
     <ClCompile Include="src\tasks\CCreatePlaylistTask.cpp" />
     <ClCompile Include="src\tasks\CDeletePlaylistItemTask.cpp" />
+    <ClCompile Include="src\tasks\CDeleteSongsQueueTask.cpp" />
     <ClCompile Include="src\tasks\CDownloadTrackTask.cpp" />
     <ClCompile Include="src\tasks\CGetCurrentPlaylistTask.cpp" />
     <ClCompile Include="src\tasks\CGetPlaylistTrackUriTask.cpp" />
@@ -258,8 +266,10 @@
     <ClCompile Include="src\tasks\CGetPlaylistItemsTask.cpp" />
     <ClCompile Include="src\tasks\CGetPlaylistsTask.cpp" />
     <ClCompile Include="src\tasks\CGetPlaylistStatsTask.cpp" />
+    <ClCompile Include="src\tasks\CGetQueueTask.cpp" />
     <ClCompile Include="src\tasks\CGetTrackInfoTask.cpp" />
     <ClCompile Include="src\tasks\CGetTrackLyricsTask.cpp" />
+    <ClCompile Include="src\tasks\CMoveSongQueueTask.cpp" />
     <ClCompile Include="src\tasks\CPlayItemTask.cpp" />
     <ClCompile Include="src\third_party\qrcodegen\qrcodegen.cpp" />
   </ItemGroup>
