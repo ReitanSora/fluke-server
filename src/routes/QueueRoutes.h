@@ -6,6 +6,7 @@ class MyPlugin;
  * @param plugin Pointer to MyPlugin instance
  *
  * Endpoints registered:
- * - GET  /queue/add          - Add items to the queue
+ * - GET	/queue/songs       - Add items to the queue
+ * - DELETE /queue/songs       - Delete items from the queue
  */
 void RegisterQueueRoutes(MyPlugin* plugin, const std::string& prefix);
